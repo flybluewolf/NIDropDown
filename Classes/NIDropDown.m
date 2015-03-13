@@ -71,7 +71,8 @@ UITableViewDataSource
   _table.dataSource = self;
   _table.layer.cornerRadius = 5;
   _table.backgroundColor = [UIColor colorWithRed:0.239 green:0.239 blue:0.239 alpha:1];
-  _table.separatorStyle = UITableViewCellSeparatorStyleNone;
+  // _table.separatorStyle = UITableViewCellSeparatorStyleNone;
+     [_table setSeparatorInset:UIEdgeInsetsZero];
 //  _table.separatorColor = [UIColor darkGrayColor];
   
   [UIView beginAnimations:nil context:nil];

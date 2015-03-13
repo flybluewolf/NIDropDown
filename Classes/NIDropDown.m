@@ -151,12 +151,51 @@ UITableViewDataSource
   UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
   if (cell == nil) {
     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier];
+            CGRect frame = cell.frame;
+        frame.size.height = [self tableView:tableView heightForRowAtIndexPath:indexPath];
+        cell.frame = frame;
   }
   
   if ([_dataSource respondsToSelector:@selector(niDropDown:customCellViewAtIndexPath:)]) {
     UIView *customView = [_dataSource niDropDown:self customCellViewAtIndexPath:indexPath];
     customView.frame = cell.contentView.bounds;
+    customView.translatesAutoresizingMaskIntoConstraints = NO;
     [cell.contentView addSubview:customView];
+    
+            NSLayoutConstraint* constraint = [NSLayoutConstraint constraintWithItem:customView
+                                                                      attribute:NSLayoutAttributeLeading
+                                                                      relatedBy:NSLayoutRelationEqual
+                                                                         toItem:cell.contentView
+                                                                      attribute:NSLayoutAttributeLeading
+                                                                     multiplier:1.0
+                                                                       constant:0];
+        [cell.contentView addConstraint:constraint];
+
+        constraint = [NSLayoutConstraint constraintWithItem:customView
+                                                  attribute:NSLayoutAttributeTrailing
+                                                  relatedBy:NSLayoutRelationEqual
+                                                     toItem:cell.contentView
+                                                  attribute:NSLayoutAttributeTrailing
+                                                 multiplier:1.0
+                                                   constant:0];
+        [cell.contentView addConstraint:constraint];
+
+        constraint = [NSLayoutConstraint constraintWithItem:customView
+                                                  attribute:NSLayoutAttributeTop
+                                                  relatedBy:NSLayoutRelationEqual
+                                                     toItem:cell.contentView
+                                                  attribute:NSLayoutAttributeTop
+                                                 multiplier:1.0
+                                                   constant:0];
+
+        [cell.contentView addConstraint:constraint];
+        constraint = [NSLayoutConstraint constraintWithItem:customView
+                                                  attribute:NSLayoutAttributeBottom
+                                                  relatedBy:NSLayoutRelationEqual
+                                                     toItem:cell.contentView
+                                                  attribute:NSLayoutAttributeBottom
+                                                 multiplier:1.0
+                                                   constant:0];
   } else {
     cell.textLabel.font = [UIFont systemFontOfSize:15];
     cell.textLabel.textAlignment = NSTextAlignmentCenter;

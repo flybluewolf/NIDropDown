@@ -71,7 +71,7 @@
     _table.delegate = self;
     _table.dataSource = self;
     _table.layer.cornerRadius = 5;
-    _table.backgroundColor = [UIColor colorWithRed:0.239 green:0.239 blue:0.239 alpha:1];
+    _table.backgroundColor = [UIColor whiteColor];
     // _table.separatorStyle = UITableViewCellSeparatorStyleNone;
     [_table setSeparatorInset:UIEdgeInsetsZero];
 
@@ -94,7 +94,13 @@
 
         if ([_dataSource respondsToSelector:@selector(customSuperViewInNIDropDown:)]) {
             UIView* superView = [_dataSource customSuperViewInNIDropDown:self];
-            self.frame = [btn.superview convertRect:self.frame toView:superView];
+
+            CGRect frame = [btn.superview convertRect:self.frame toView:superView];
+            //            if (self.frame.origin.y + self.frame.size.height > superView.frame.size.height) {
+            //                frame.size.height = superView.frame.size.height - self.frame.origin.y;
+            //            }
+
+            self.frame = frame;
         }
     }
     _table.frame = CGRectMake(0, 0, btnFrame.size.width, height);
@@ -108,9 +114,9 @@
         //        }
         //
         UIView* superView = [_dataSource customSuperViewInNIDropDown:self];
-        //        CGPoint center = [_dataSource customSuperViewCenterInNIDropDown:self];
+        CGPoint center = [_dataSource customSuperViewCenterInNIDropDown:self];
         [superView addSubview:self];
-        //        self.center = center;
+        self.center = center;
     }
     else {
         [btn.superview addSubview:self];
@@ -173,6 +179,8 @@
     }
 
     if ([_dataSource respondsToSelector:@selector(niDropDown:customCellViewAtIndexPath:)]) {
+        [cell.contentView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+
         UIView* customView = [_dataSource niDropDown:self customCellViewAtIndexPath:indexPath];
         customView.frame = cell.contentView.bounds;
         customView.translatesAutoresizingMaskIntoConstraints = NO;

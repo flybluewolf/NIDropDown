@@ -220,6 +220,10 @@
                                                   attribute:NSLayoutAttributeBottom
                                                  multiplier:1.0
                                                    constant:0];
+          if ([_dataSource respondsToSelector:@selector(niDropDown:titleForRowAtIndexPath:)])
+            cell.textLabel.text = [_dataSource niDropDown:self titleForRowAtIndexPath:indexPath];
+        
+          cell.textLabel.hidden = YES;
     }
     else {
         cell.textLabel.font = [UIFont systemFontOfSize:15];
